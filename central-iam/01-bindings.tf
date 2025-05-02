@@ -21,7 +21,8 @@ resource "google_project_iam_member" "project_b" {
   for_each = toset([
     "roles/storage.admin",
     "roles/compute.instanceAdmin",
-    "roles/owner"
+    "roles/owner",
+    "roles/compute.admin"
   ])
 
   role   = each.key
