@@ -30,7 +30,7 @@ jobs:
         run: terraform init
 
       - name: "Terraform Remove"
-        working-directory: project-a    
+        working-directory: project-b    
         run: terraform state rm google_project_iam_member.project_b
 
 
