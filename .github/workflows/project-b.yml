@@ -28,16 +28,10 @@ jobs:
       - name: "Terraform Init"
         working-directory: project-b    
         run: terraform init
-
-      - name: "Terraform Remove"
+      - name: "Terraform Plan"
         working-directory: project-b    
-        run: terraform state rm google_project_iam_member.project_b
-
-
-      # - name: "Terraform Plan"
-      #   working-directory: project-b    
-      #   run: terraform plan -out=plan.tfplan -input=false -lock-timeout=10m
-      # - name: "Terraform Apply"
-      #   working-directory: project-b    
-      #   if: github.event_name == 'push'
-      #   run: terraform apply -input=false -lock-timeout=10m plan.tfplan
+        run: terraform plan -out=plan.tfplan -input=false -lock-timeout=10m
+      - name: "Terraform Apply"
+        working-directory: project-b    
+        if: github.event_name == 'push'
+        run: terraform apply -input=false -lock-timeout=10m plan.tfplan
