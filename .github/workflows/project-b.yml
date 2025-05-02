@@ -1,0 +1,37 @@
+name: "project-b"
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: ["main"]
+    paths: ["project-b/**"]    
+  pull_request:
+    branches: ["main"]
+    paths: ["project-b/**"]    
+jobs:
+  run:
+    name: "Workload Identity Job"
+    runs-on: "ubuntu-latest"
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+      - name: "Auth in GCP"
+        id: "auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          create_credentials_file: true
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_ID }}
+      - name: "Setup Terraform"
+        uses: hashicorp/setup-terraform@v3
+      - name: "Terraform Init"
+        working-directory: project-b    
+        run: terraform init
+      - name: "Terraform Plan"
+        working-directory: project-b    
+        run: terraform plan -out=plan.tfplan -input=false -lock-timeout=10m
+      - name: "Terraform Apply"
+        working-directory: project-b    
+        if: github.event_name == 'push'
+        run: terraform apply -input=false -lock-timeout=10m plan.tfplan
