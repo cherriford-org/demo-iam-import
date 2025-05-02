@@ -1,5 +1,5 @@
 # -----------------------------------
-#  project-b IAM bindings (prj-monitoring)
+#  project-b IAM bindings (prj-monitoring) 
 # -----------------------------------
 
 resource "google_project_iam_member" "project_b" {
