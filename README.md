@@ -17,7 +17,13 @@ Removed google_project_iam_member.project_a["roles/storage.admin"]
 Successfully removed 3 resource instance(s).
 ```
 
-NOTE: You can also perform this in the pipeline (requires editing the pipeline file to be terraform rm instead of terraform apply)
+NOTE: If you perform it this way, you'd have to upload the new state file to the GCS bucket. An easier method is to perform this in the pipeline (requires editing the pipeline file to be terraform rm instead of terraform apply). An example is shown below:
+
+```
+      - name: "Terraform Remove"
+        working-directory: project-a    
+        run: terraform rm google_project_iam_member.project_a
+```
 
 2. Import state by adding an imports.tf file in new location 
 
